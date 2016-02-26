@@ -109,12 +109,9 @@ uint8_t TwoWire::endTransmission(uint8_t sendStop)
 		// transmit buffer (blocking)
 		if (txBufferLength >= 1) {
 			err = i2c_writebytes(txBuffer, txBufferLength, !sendStop);
-		} else {
-			/* FIXME: A zero byte transmit is typically used to check for an
-			 * ACK from the slave device. This is currently not supported by
-			 * this library implementation
-			 */
-			return 4; // Other error
+		} else {			
+			//Workaround: I2C bus scan is currently implemented by sending an extra byte of value 0
+            err = i2c_writebytes(txBuffer, txBufferLength, !sendStop);
 		}
 		// empty buffer
 		txBufferLength = 0;

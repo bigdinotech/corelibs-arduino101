@@ -98,7 +98,13 @@ void i2c_fill_fifo(i2c_info_pt dev, bool no_stop)
 
     if (_Rarely(!dev->rx_tx_len))
     {
-        return;
+        //Workaround: I2C bus scan is currently implemented by sending an extra byte of value 0
+        data = 0;
+        data = I2C_PUSH_DATA;
+        data |= I2C_STOP_CMD;
+        dev->total_write_bytes += 1;
+        dev->tx_len++;
+        REG_WRITE( I2C_DATA_CMD, data );
     }
 
     tx_cnt = dev->fifo_depth - REG_READ( I2C_TXFLR );
