@@ -25,6 +25,8 @@
 
 #include <Arduino.h>
 
+//Register Info can be found in the Curie EDS...
+
 //I2S Modes
 #define PHILIPS_MODE 0b001000001000
 #define RIGHT_JST_MODE 0b010010010010
@@ -56,7 +58,7 @@
 #define I2S_DEV_CONF    (uint32_t *)0xB0003820             //Device Configuration Register
 #define I2S_DATA_REG    (volatile uint32_t *)0xB0003850    //Data Register
 #define I2S_MASK_INT    (uint32_t *)0xB0800468             //Host Processor Interrupt Routing Mask 7 
-#define CLK_GATE_CTL    (uint32_t *)0xB0800018            //CLK_GATE_CTL register
+#define CLK_GATE_CTL    (uint32_t *)0xB0800018             //CLK_GATE_CTL register
 
 //DMA
 //#define DMA_CTL_L0      (uint32_t *))0xB0700000
@@ -64,9 +66,59 @@
 
 
 //Masks
-#define I2S_SAMPLERATE_MASK 0xF800F800
-#define I2S_RESOLUTION_MASK 0x07FF07FF
+#define I2S_SAMPLERATE_MASK         0xF800F800
+#define I2S_RESOLUTION_MASK         0x07FF07FF
 
+#define I2S_STAT_TX_EMPTY           0x00000100
+#define I2S_STAT_TX_AEMPTY          0x00000200
+#define I2S_STAT_TX_FULL            0x00000400
+#define I2S_STAT_TX_AFULL           0x00000800
+#define I2S_STAT_CLEAR_TX           0xFFFFF0FF
+#define I2S_STAT_CLEAR_TX_EMPTY     0xFFFFFEFF
+#define I2S_STAT_CLEAR_TX_AEMPTY    0xFFFFFDFF
+#define I2S_STAT_CLEAR_TX_FULL      0xFFFFFBFF
+#define I2S_STAT_CLEAR_TX_AFULL     0xFFFFF7FF
+#define I2S_STAT_RX_EMPTY           0x00001000
+#define I2S_STAT_RX_AEMPTY          0x00002000
+#define I2S_STAT_RX_FULL            0x00004000
+#define I2S_STAT_RX_AFULL           0x00008000
+#define I2S_STAT_CLEAR_RX           0xFFFF0FFF
+#define I2S_STAT_CLEAR_RX_EMPTY     0xFFFFEFFF
+#define I2S_STAT_CLEAR_RX_AEMPTY    0xFFFFDFFF
+#define I2S_STAT_CLEAR_RX_FULL      0xFFFFBFFF
+#define I2S_STAT_CLEAR_RX_AFULL     0xFFFF7FFF
+#define I2S_STAT_UPDATE             0x00000011
+
+#define I2S_CID_CTRL_ENABLE_INT             0x00008000
+#define I2S_CID_CTRL_TFIFO_EMPTY            0x01000000
+#define I2S_CID_CTRL_TFIFO_AEMPTY           0x02000000
+#define I2S_CID_CTRL_TFIFO_FULL             0x04000000
+#define I2S_CID_CTRL_TFIFO_AFULL            0x08000000
+#define I2S_CID_CTRL_DISABLE_TFIFO_EMPTY    0xFEFFFFFF
+#define I2S_CID_CTRL_DISABLE_TFIFO_AEMPTY   0xFDFFFFFF
+#define I2S_CID_CTRL_DISABLE_TFIFO_FULL     0xFBFFFFFF
+#define I2S_CID_CTRL_DISABLE_TFIFO_AFULL    0xF7FFFFFF
+#define I2S_CID_CTRL_RFIFO_EMPTY            0x10000000
+#define I2S_CID_CTRL_RFIFO_AEMPTY           0x20000000
+#define I2S_CID_CTRL_RFIFO_FULL             0x40000000
+#define I2S_CID_CTRL_RFIFO_AFULL            0x80000000
+#define I2S_CID_CTRL_DISABLE_RFIFO_EMPTY    0xEFFFFFFF
+#define I2S_CID_CTRL_DISABLE_RFIFO_AEMPTY   0xDFFFFFFF
+#define I2S_CID_CTRL_DISABLE_RFIFO_FULL     0xBFFFFFFF
+#define I2S_CID_CTRL_DISABLE_RFIFO_AFULL    0x7FFFFFFF
+
+#define I2S_CTRL_ENABLE_TX      0x00000001
+#define I2S_CTRL_DISABLE_TX     0xFFFFFFFE
+#define I2S_CTRL_ENABLE_RX      0x00000002
+#define I2S_CTRL_DISABLE_RX     0xFFFFFFFD
+#define I2S_CTRL_SYNC_TX        0x02000000
+#define I2S_CTRL_RESET_TX       0xFDFFFFFF
+#define I2S_CTRL_SYNC_RX        0x04000000
+#define I2S_CTRL_RESET_RX       0xFBFFFFFF
+#define I2S_CTRL_RESET_TFIFO    0xFF7FFFFF
+#define I2S_CTRL_RESET_RFIFO    0xFEFFFFFF
+
+#define I2S_MASK_INT_ENABLE     0xFFFFFEFF
 
 //I2S Arduino Pins
 #define I2S_TXD     7
