@@ -45,7 +45,7 @@ int main( void )
 	for (;;) /* This infinite loop is intentional and requested by design */
 	{
 		loop();
-		if (serialEventRun) serialEventRun();
+		//if (serialEventRun) serialEventRun();
 	}
 
 	return 0;

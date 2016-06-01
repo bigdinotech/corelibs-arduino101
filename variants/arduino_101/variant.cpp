@@ -220,7 +220,7 @@ void variantAdcInit(void)
 void initVariant( void )
 {
     /* Initialise CDC-ACM shared buffers pointers, provided by LMT */
-    Serial.setSharedData(shared_data->cdc_acm_buffers);
+    //Serial.setSharedData(shared_data->cdc_acm_buffers);
 
     /* For now, lets enable clocks for all interfaces we need
      * TODO - Consider only enabling as needed later to reduce power consumption
