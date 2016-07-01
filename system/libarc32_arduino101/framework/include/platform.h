@@ -109,6 +109,11 @@ struct platform_shared_block_ {
      * The ARC core counts on QRK to find valid pointers in place.
      */
     struct cdc_acm_shared_data	* cdc_acm_buffers;
+    
+    struct cdc_acm_shared_data cdc_acm_buffers_obj;
+
+    struct cdc_ring_buffer cdc_acm_shared_rx_buffer;
+    struct cdc_ring_buffer cdc_acm_shared_tx_buffer;
 };
 
 #define RAM_START           0xA8000000
