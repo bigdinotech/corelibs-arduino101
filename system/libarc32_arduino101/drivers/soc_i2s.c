@@ -192,22 +192,30 @@ static void i2s_dma_cb_err(void *num)
 static void i2s_dma_cb_done(void *num)
 {
 	uint8_t channel = (uint32_t)num;
+ 	uint32_t reg;
+  
+	if(channel == I2S_CHANNEL_TX)
+	{
+		if((0x00200000 & MMIO_REG_VAL_FROM_BASE(SOC_I2S_BASE, SOC_I2S_CTRL))
+        	&& !(0x18000000 & MMIO_REG_VAL_FROM_BASE(SOC_I2S_BASE, SOC_I2S_CTRL)))
+		{	
+			for(int i = 0; i < 4; ++i)
+				MMIO_REG_VAL_FROM_BASE(SOC_I2S_BASE, SOC_I2S_DATA_REG) = 0x0;
+		}
 
+		do
+		{
+			reg = MMIO_REG_VAL_FROM_BASE(SOC_I2S_BASE, i2s_reg_map[channel].fifo_stat);
+		} while(reg & 0x000000FF);
+	}
+  
 	if (i2s_info->cfg[channel].cb_done) 
 	{
 		i2s_info->cfg[channel].cb_done(i2s_info->cfg[channel].cb_done_arg);
 	}
  
- 	uint32_t reg;
-	if(channel == I2S_CHANNEL_TX)
-	{
- 		do
- 		{
- 			reg = MMIO_REG_VAL_FROM_BASE(SOC_I2S_BASE, i2s_reg_map[channel].fifo_stat);
- 		} while(reg & 0x000000FF);
- 	}
 	i2s_disable(channel);
-
+ 
 	return;
 }
 
