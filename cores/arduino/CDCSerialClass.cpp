@@ -71,7 +71,8 @@ CDCSerialClass::CDCSerialClass(uart_init_info *info)
 void CDCSerialClass::setSharedData(struct cdc_acm_shared_data *cdc_acm_shared_data)
 {
     _shared_data = cdc_acm_shared_data;
-    _rx_buffer = cdc_acm_shared_data->rx_buffer;
+    //use DCCM for rx buffer
+    _rx_buffer = (cdc_ring_buffer*)dccm_malloc(sizeof(cdc_ring_buffer));
     _tx_buffer = cdc_acm_shared_data->tx_buffer;
 }
 
@@ -92,9 +93,6 @@ void CDCSerialClass::init(const uint32_t dwBaudRate, const uint8_t modeReg)
      * take to clock out a byte on a standard UART at this baud rate */
     _writeDelayUsec = 8000000 / dwBaudRate;
 
-    /* Make sure both ring buffers are initialized back to empty.
-     * Empty the Rx buffer but don't touch Tx buffer: it is drained by the
-     * LMT one way or another */
     _rx_buffer->tail = _rx_buffer->head;
     
     mailbox_register(CDC_MAILBOX_RX_CHANNEL, cdc_mbox_isr);
